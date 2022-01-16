@@ -1,5 +1,6 @@
 package com.detrav.utils;
 
+import com.typesafe.config.ConfigException;
 import gregtech.api.enums.Materials;
 import net.minecraftforge.fluids.FluidRegistry;
 
