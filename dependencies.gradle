@@ -1,10 +1,7 @@
 // Add your dependencies here
 
 dependencies {
-    compile("com.github.GTNewHorizons:bartworks:master-SNAPSHOT:dev")
-    compile("com.github.GTNewHorizons:GTplusplus:master-SNAPSHOT:dev")
-    compile("com.github.GTNewHorizons:GT5-Unofficial:master-SNAPSHOT:dev")
-    compile("com.github.GTNewHorizons:NewHorizonsCoreMod:master-SNAPSHOT:dev")
+    compile("gtmega:gt5u-mc1.7.10:5.28.21-gtmega:dev")
 
     compileOnly("com.github.GTNewHorizons:VisualProspecting:master-SNAPSHOT:dev") {
         transitive = false

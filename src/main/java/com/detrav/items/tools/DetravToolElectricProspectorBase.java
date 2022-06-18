@@ -186,4 +186,12 @@ public class DetravToolElectricProspectorBase implements IToolStats {
 	public float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
 		return aDefault;
 	}
+
+    @Override
+    public boolean onItemUse(ItemStack itemStack, World world, int i, int i1, int i2, int i3, EntityPlayer entityPlayer, float v, float v1, float v2) {
+        return false;
+    }
+
+    @Override
+    public void toolTip(List list, ItemStack itemStack, EntityPlayer entityPlayer, IToolStats iToolStats) {}
 }

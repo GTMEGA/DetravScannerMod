@@ -3,7 +3,6 @@ package com.detrav.items.behaviours;
 import com.detrav.DetravScannerMod;
 import com.detrav.items.DetravMetaGeneratedTool01;
 import com.detrav.utils.BartWorksHelper;
-import com.detrav.utils.GTppHelper;
 import com.sinthoras.visualprospecting.VisualProspecting_API;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -250,10 +249,6 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
                                     addOreToHashMap(name, aPlayer);
                                 }
                             }
-                        } else if (DetravScannerMod.isGTppLoaded && GTppHelper.isGTppBlock(tBlock) ) {
-                            String name = GTppHelper.getGTppVeinName(tBlock);
-                            if (!name.isEmpty())
-                                addOreToHashMap(name, aPlayer);
                         } else if (DetravScannerMod.isBartWorksLoaded && BartWorksHelper.isOre(tBlock)){
                             if (data != 1 && BartWorksHelper.isSmallOre(tBlock)) continue;
                             addOreToHashMap(GT_LanguageManager.getTranslation((BartWorksHelper.isSmallOre(tBlock) ? "bw.blockores.02." : "bw.blockores.01.") + ((BartWorksHelper.getMetaFromBlock(aChunk,x,y,z,tBlock))*-1) + ".name"), aPlayer);

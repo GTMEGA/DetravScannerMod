@@ -3,7 +3,6 @@ package com.detrav.net;
 import com.detrav.DetravScannerMod;
 import com.detrav.gui.DetravScannerGUI;
 import com.detrav.gui.textures.DetravMapTexture;
-import com.detrav.utils.GTppHelper;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.google.common.base.Objects;
 import com.google.common.io.ByteArrayDataInput;
@@ -56,8 +55,8 @@ public class ProspectingPacket extends DetravPacket {
     }
     
     private static void addOre(ProspectingPacket packet, byte y, int i, int j, short meta) {
-        final String name;
-        short[] rgba;
+        String name = "";
+        short[] rgba = null;
 
         try {
             if(packet.ptype == 0 || packet.ptype == 1) {
@@ -72,10 +71,6 @@ public class ProspectingPacket extends DetravPacket {
                         final Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault((short) (meta * -1), null);
                         rgba = werkstoff != null ? werkstoff.getRGBA() : new short[]{0,0,0,0}; 
                     }
-                } else {
-                    gtPlusPlus.core.material.Material pMaterial = GTppHelper.decodeoresGTpp.get((short) (meta - 7000));
-                    rgba = pMaterial.getRGBA();
-                    name = pMaterial.getLocalizedName() + " Ore";
                 }
             } else if (packet.ptype == 2) {
                 // Fluid
@@ -99,8 +94,10 @@ public class ProspectingPacket extends DetravPacket {
         } catch (Exception ignored) {
             return;
         }
-        packet.ores.put(name, ((rgba[0] & 0xFF) << 16) + ((rgba[1] & 0xFF) << 8) + ((rgba[2] & 0xFF)));
-        packet.metaMap.put(meta, name);
+        if (rgba == null) {
+            packet.ores.put(name, ((rgba[0] & 0xFF) << 16) + ((rgba[1] & 0xFF) << 8) + ((rgba[2] & 0xFF)));
+            packet.metaMap.put(meta, name);
+        }
     }
 
     public static Object decode(ByteArrayDataInput aData) {

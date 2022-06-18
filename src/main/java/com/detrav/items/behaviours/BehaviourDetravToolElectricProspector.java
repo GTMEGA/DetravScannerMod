@@ -5,7 +5,6 @@ import com.detrav.items.DetravMetaGeneratedTool01;
 import com.detrav.net.DetravNetwork;
 import com.detrav.net.ProspectingPacket;
 import com.detrav.utils.BartWorksHelper;
-import com.detrav.utils.GTppHelper;
 import com.sinthoras.visualprospecting.VisualProspecting_API;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.items.GT_MetaBase_Item;
@@ -105,8 +104,6 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                                 packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, tMetaID);
                                             }
                                         }
-                                    } else if (DetravScannerMod.isGTppLoaded && GTppHelper.isGTppBlock(tBlock)) {
-                                        packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, GTppHelper.getGTppMeta(tBlock));
                                     } else if (DetravScannerMod.isBartWorksLoaded && BartWorksHelper.isOre(tBlock)) {
                                         if (data != 1 && BartWorksHelper.isSmallOre(tBlock)) continue;
                                         packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, BartWorksHelper.getMetaFromBlock(c, x, y, z, tBlock));
