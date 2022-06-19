@@ -94,7 +94,7 @@ public class ProspectingPacket extends DetravPacket {
         } catch (Exception ignored) {
             return;
         }
-        if (rgba == null) {
+        if (rgba != null) {
             packet.ores.put(name, ((rgba[0] & 0xFF) << 16) + ((rgba[1] & 0xFF) << 8) + ((rgba[2] & 0xFF)));
             packet.metaMap.put(meta, name);
         }
