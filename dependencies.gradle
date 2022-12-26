@@ -1,12 +1,14 @@
 // Add your dependencies here
 
 dependencies {
-    compile("gtmega:gt5u-mc1.7.10:5.28.21-gtmega:dev")
+    //compile("gtmega:gt5u-mc1.7.10:5.28.21-gtmega:dev")
+    compile("gtmega:gt5u-mc1.7.10:5.29.1-mega:dev")
 
     compileOnly("com.github.GTNewHorizons:VisualProspecting:master-SNAPSHOT:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:ForestryMC:master-SNAPSHOT:dev") {
+    //forestry-mc1.7.10/4.4.0-55
+    compileOnly("com.github.GTNewHorizons:ForestryMC:4.5.0:api") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:Railcraft:master-SNAPSHOT:dev") {
