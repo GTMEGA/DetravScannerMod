@@ -2,7 +2,6 @@ package com.detrav.items.behaviours;
 
 import com.detrav.DetravScannerMod;
 import com.detrav.items.DetravMetaGeneratedTool01;
-import com.detrav.utils.BartWorksHelper;
 import com.sinthoras.visualprospecting.VisualProspecting_API;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -14,8 +13,8 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.GT_Pollution;
 import gregtech.common.GT_UndergroundOil;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.GT_Block_Ore;
+import gregtech.common.blocks.GT_Block_Ore_Abstract;
 import gregtech.common.items.behaviors.Behaviour_None;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -120,7 +119,7 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
                 }
                 if (DetravScannerMod.DEBUGBUILD)
                     aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.YELLOW+"Chunk at "+ aX +"|"+aZ+" to "+(aX+16)+"|"+(aZ+16) + StatCollector.translateToLocal("detrav.scanner.distance.texts." + distTextIndex)));
-                processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getTileEntity(aX, aY, aZ),GT_OreDictUnificator.getAssociation(new ItemStack(aWorld.getBlock(aX, aY, aZ), 1, aWorld.getBlockMetadata(aX, aY, aZ))), aRandom, chance);
+                processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getBlock(aX, aY, aZ),GT_OreDictUnificator.getAssociation(new ItemStack(aWorld.getBlock(aX, aY, aZ), 1, aWorld.getBlockMetadata(aX, aY, aZ))), aRandom, chance);
             }
         }
         
@@ -182,7 +181,7 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
     {
         ores = new HashMap<>();
         aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD+ StatCollector.translateToLocal("detrav.scanner.prospecting") + EnumChatFormatting.BLUE + "(" + aX + ", " + aZ + ")" ));
-        processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getTileEntity(aX, aY, aZ),GT_OreDictUnificator.getAssociation(new ItemStack(aWorld.getBlock(aX, aY, aZ), 1, aWorld.getBlockMetadata(aX, aY, aZ))), new SplittableRandom(), 1000);
+        processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getBlock(aX, aY, aZ),GT_OreDictUnificator.getAssociation(new ItemStack(aWorld.getBlock(aX, aY, aZ), 1, aWorld.getBlockMetadata(aX, aY, aZ))), new SplittableRandom(), 1000);
         
         for (String key : ores.keySet()) {
             int value = ores.get(key);
@@ -197,19 +196,14 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
         }
     }
 
-    protected void processOreProspecting(DetravMetaGeneratedTool01 aItem, ItemStack aStack, EntityPlayer aPlayer, Chunk aChunk, TileEntity aTileEntity, ItemData tAssotiation, SplittableRandom aRandom, int chance)//TileEntity aTileEntity)
+    protected void processOreProspecting(DetravMetaGeneratedTool01 aItem, ItemStack aStack, EntityPlayer aPlayer, Chunk aChunk, Block block, ItemData tAssotiation, SplittableRandom aRandom, int chance)//TileEntity aTileEntity)
     {
-        if (aTileEntity != null) {
-            if (aTileEntity instanceof GT_TileEntity_Ores) {
-                GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores) aTileEntity;
-                short meta = gt_entity.getMetaData();
-                String format = LanguageRegistry.instance().getStringLocalization("gt.blockores." + meta + ".name");
-                String name = Materials.getLocalizedNameForItem(format, meta%1000);
-                addOreToHashMap(name, aPlayer);
-                if (!aPlayer.capabilities.isCreativeMode)
-                    aItem.doDamage(aStack, this.mCosts);
-                return;
-            }
+        if (block != null && block instanceof GT_Block_Ore) {
+            GT_Block_Ore gtBlock = (GT_Block_Ore) block;
+            String name = gtBlock.getLocalizedName();
+            addOreToHashMap(name, aPlayer);
+            if (!aPlayer.capabilities.isCreativeMode)
+                aItem.doDamage(aStack, this.mCosts);
         } else if (tAssotiation!=null){
             try {
                 String name = tAssotiation.toString();
@@ -232,26 +226,10 @@ public class BehaviourDetravToolProspector extends Behaviour_None {
 
                         Block tBlock = aChunk.getBlock(x,y,z);
                         short tMetaID = (short)aChunk.getBlockMetadata(x,y,z);
-                        if (tBlock instanceof GT_Block_Ores_Abstract) {
-                            TileEntity tTileEntity = aChunk.getTileEntityUnsafe(x,y,z);
-                            if ((tTileEntity instanceof GT_TileEntity_Ores)
-                                && ((GT_TileEntity_Ores) tTileEntity).mNatural) {
-                                tMetaID = (short)((GT_TileEntity_Ores) tTileEntity).getMetaData();
-                                try {
-                                    String format = LanguageRegistry.instance().getStringLocalization(tBlock.getUnlocalizedName() + "." + tMetaID + ".name");
-                                    String name = Materials.getLocalizedNameForItem(format, tMetaID%1000);
-                                    if (data != 1 && name.startsWith(small_ore_keyword)) continue;
-                                    addOreToHashMap(name, aPlayer);
-                                }
-                                catch(Exception e) {
-                                    String name = tBlock.getUnlocalizedName() + ".";
-                                    if (data != 1 && name.contains(".small."))  continue;
-                                    addOreToHashMap(name, aPlayer);
-                                }
-                            }
-                        } else if (DetravScannerMod.isBartWorksLoaded && BartWorksHelper.isOre(tBlock)){
-                            if (data != 1 && BartWorksHelper.isSmallOre(tBlock)) continue;
-                            addOreToHashMap(GT_LanguageManager.getTranslation((BartWorksHelper.isSmallOre(tBlock) ? "bw.blockores.02." : "bw.blockores.01.") + ((BartWorksHelper.getMetaFromBlock(aChunk,x,y,z,tBlock))*-1) + ".name"), aPlayer);
+                        if (tBlock instanceof GT_Block_Ore) {
+                            GT_Block_Ore gtBlock = (GT_Block_Ore) block;
+                            String name = gtBlock.getLocalizedName();
+                            addOreToHashMap(name, aPlayer);
                         } else if (data == 1) {
                             tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                             if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {

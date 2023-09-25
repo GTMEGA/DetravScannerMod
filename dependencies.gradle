@@ -1,20 +1,36 @@
 // Add your dependencies here
+static def curse(curseDep) {
+    return "curse.maven:" + curseDep
+}
+
+def deobfCurse(curseDep) {
+    try {
+        return deobfMaven("https://cursemaven.com/", curse(curseDep))
+    } catch (Exception ignored) {
+        println("Failed to get dep " + curseDep + " from cursemaven. Grabbing from mirror.")
+        return deobfMaven("https://mvn.falsepattern.com/cursemaven/", curse(curseDep))
+    }
+}
 
 dependencies {
     //compile("gtmega:gt5u-mc1.7.10:5.28.21-gtmega:dev")
-    compile("gtmega:gt5u-mc1.7.10:5.29.1-mega:dev")
-
-    compileOnly("com.github.GTNewHorizons:VisualProspecting:master-SNAPSHOT:dev") {
+    implementation("gtmega:gt5u-mc1.7.10:5.32.0-mega:dev") {
         transitive = false
+    }
+
+    compileOnly('com.github.GTNewHorizons:VisualProspecting:1.1.1:dev') {
+        transitive=false
     }
     //forestry-mc1.7.10/4.4.0-55
     compileOnly("com.github.GTNewHorizons:ForestryMC:4.5.0:api") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:Railcraft:master-SNAPSHOT:dev") {
-        transitive = false
-    }
-    compileOnly("com.github.GTNewHorizons:EnderIO:master-SNAPSHOT:dev") {
+
+    compileOnly(deobfCurse("railcraft-51195:2458987"))
+//    compileOnly("com.github.GTNewHorizons:EnderIO:master-SNAPSHOT:dev") {
+//        transitive = false
+//    }
+    compileOnly("com.enderio:EnderIO:1.7.10-2.3.0.417_beta:dev") {  // TODO: use in-house version
         transitive = false
     }
 

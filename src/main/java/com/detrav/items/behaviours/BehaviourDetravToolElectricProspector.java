@@ -4,7 +4,6 @@ import com.detrav.DetravScannerMod;
 import com.detrav.items.DetravMetaGeneratedTool01;
 import com.detrav.net.DetravNetwork;
 import com.detrav.net.ProspectingPacket;
-import com.detrav.utils.BartWorksHelper;
 import com.sinthoras.visualprospecting.VisualProspecting_API;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.items.GT_MetaBase_Item;
@@ -12,8 +11,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.GT_UndergroundOil;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.GT_Block_Ore;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -89,29 +87,15 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                 case 0:
                                 case 1:
                                     final Block tBlock = c.getBlock(x, y, z);
-                                    short tMetaID = (short) c.getBlockMetadata(x, y, z);
-                                    if (tBlock instanceof GT_Block_Ores_Abstract) {
-                                        TileEntity tTileEntity = c.getTileEntityUnsafe(x, y, z);
-                                        if ((tTileEntity instanceof GT_TileEntity_Ores) && ((GT_TileEntity_Ores) tTileEntity).mNatural) {
-                                            tMetaID = (short) ((GT_TileEntity_Ores) tTileEntity).getMetaData();
-                                            try {
-                                                String name = GT_LanguageManager.getTranslation(tBlock.getUnlocalizedName() + "." + tMetaID + ".name");
-                                                if (data != 1 && name.startsWith(small_ore_keyword)) continue;
-                                                packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, tMetaID);
-                                            } catch (Exception e) {
-                                                String name = tBlock.getUnlocalizedName() + ".";
-                                                if (data != 1 && name.contains(".small.")) continue;
-                                                packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, tMetaID);
-                                            }
-                                        }
-                                    } else if (DetravScannerMod.isBartWorksLoaded && BartWorksHelper.isOre(tBlock)) {
-                                        if (data != 1 && BartWorksHelper.isSmallOre(tBlock)) continue;
-                                        packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, BartWorksHelper.getMetaFromBlock(c, x, y, z, tBlock));
+                                    if (tBlock instanceof GT_Block_Ore) {
+                                        GT_Block_Ore gtBlock = (GT_Block_Ore) tBlock;
+                                        String oreMatName = gtBlock.getOreType().mName;
+                                        packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, oreMatName);
                                     } else if (data == 1) {
-                                        ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
-                                        if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
-                                            packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, (short) tAssotiation.mMaterial.mMaterial.mMetaItemSubID);
-                                        }
+//                                        ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
+//                                        if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
+//                                            packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, (short) tAssotiation.mMaterial.mMaterial.mMetaItemSubID);
+//                                        }
                                     }
                                     break;
                                 case 2:
@@ -120,8 +104,8 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                     }
                                     FluidStack fStack = GT_UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(c.xPosition * 16 + x, c.zPosition * 16 + z), -1);
                                     if (fStack.amount > 0) {
-                                        packet.addBlock(c.xPosition * 16 + x, 1, c.zPosition * 16 + z, (short) fStack.getFluidID());
-                                        packet.addBlock(c.xPosition * 16 + x, 2, c.zPosition * 16 + z, (short) fStack.amount);
+//                                        packet.addBlock(c.xPosition * 16 + x, 1, c.zPosition * 16 + z, (short) fStack.getFluidID());
+//                                        packet.addBlock(c.xPosition * 16 + x, 2, c.zPosition * 16 + z, (short) fStack.amount);
                                     }
                                     break;
                                 case 3:
@@ -131,7 +115,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                     if (polution > 0xFF)
                                         polution = 0xFF;
                                     polution = 0xFF - polution;
-                                    packet.addBlock(c.xPosition * 16 + x, 1, c.zPosition * 16 + z, (short) polution);
+                                    //packet.addBlock(c.xPosition * 16 + x, 1, c.zPosition * 16 + z, (short) polution);
                                     break;
                             }
                             if (data > 1)

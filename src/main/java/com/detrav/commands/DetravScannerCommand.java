@@ -3,7 +3,6 @@ package com.detrav.commands;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_TileEntity_Ores;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -95,30 +94,31 @@ public class DetravScannerCommand implements ICommand {
         if(c == null)
             sender.addChatMessage(new ChatComponentText("ERROR"));
         HashMap<String,Integer> ores = new HashMap<>();
-        for (int x = 0; x < 16; x++)
-            for (int z = 0; z < 16; z++) {
-                int ySize = c.getHeightValue(x, z);
-                for (int y = 1; y < ySize; y++) {
-                    Block b = c.getBlock(x, y, z);
-                    if (b == GregTech_API.sBlockOres1) {
-                        TileEntity entity = c.getTileEntityUnsafe(x, y, z);
-                        if (entity != null) {
-                            GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores) entity;
-                            short meta = gt_entity.getMetaData();
-                            String name = Materials.getLocalizedNameForItem(
-                            		GT_LanguageManager.getTranslation(b.getUnlocalizedName() + "." + meta + ".name"), meta%1000);
-                            if(name.startsWith("Small")) continue;
-                            if (fName == null || name.toLowerCase().contains(fName)) {
-                                if (!ores.containsKey(name))
-                                    ores.put(name, 1);
-                                else {
-                                    int val = ores.get(name);
-                                    ores.put(name, val + 1);
-                                }
-                            }
-                        }
-                    }
-                }
+        for (int x = 0; x < 16; x++) {
+
+//            for (int z = 0; z < 16; z++) {
+//                int ySize = c.getHeightValue(x, z);
+//                for (int y = 1; y < ySize; y++) {
+//                    Block b = c.getBlock(x, y, z);
+//                    if (b == GregTech_API.sBlockOres1) {
+//                        TileEntity entity = c.getTileEntityUnsafe(x, y, z);
+//                        if (entity != null) {
+//                            GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores) entity;
+//                            short meta = gt_entity.getMetaData();
+//                            String name = Materials.getLocalizedNameForItem(
+//                            		GT_LanguageManager.getTranslation(b.getUnlocalizedName() + "." + meta + ".name"), meta%1000);
+//                            if(name.startsWith("Small")) continue;
+//                            if (fName == null || name.toLowerCase().contains(fName)) {
+//                                if (!ores.containsKey(name))
+//                                    ores.put(name, 1);
+//                                else {
+//                                    int val = ores.get(name);
+//                                    ores.put(name, val + 1);
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
 
             }
         sender.addChatMessage(new ChatComponentText("*** Detrav Scanner Begin"));

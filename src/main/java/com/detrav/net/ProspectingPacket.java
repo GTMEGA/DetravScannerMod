@@ -3,7 +3,6 @@ package com.detrav.net;
 import com.detrav.DetravScannerMod;
 import com.detrav.gui.DetravScannerGUI;
 import com.detrav.gui.textures.DetravMapTexture;
-import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.google.common.base.Objects;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
@@ -11,6 +10,7 @@ import com.google.common.io.ByteStreams;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.common.blocks.GT_Block_Ore_Abstract;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -34,9 +34,9 @@ public class ProspectingPacket extends DetravPacket {
     public final int posZ;
     public final int size;
     public final int ptype;
-    public final HashMap<Byte, Short>[][] map;
+    public final HashMap<Byte, String>[][] map;
     public final HashMap<String, Integer> ores;
-    public final HashMap<Short, String> metaMap;
+    public final HashMap<String, String> metaMap;
     public static final HashMap<Integer, short[]> fluidColors = new HashMap<>();
     
     public int level = -1;
@@ -54,36 +54,29 @@ public class ProspectingPacket extends DetravPacket {
         this.metaMap = new HashMap<>();
     }
     
-    private static void addOre(ProspectingPacket packet, byte y, int i, int j, short meta) {
+    private static void addOre(ProspectingPacket packet, byte y, int i, int j, String meta) {
         String name = "";
         short[] rgba = null;
 
         try {
             if(packet.ptype == 0 || packet.ptype == 1) {
                 // Ore or Small Ore
-                if (meta < 7000 || meta > 7500) {
-                    if (meta > 0) {
-                        Materials tMaterial = GregTech_API.sGeneratedMaterials[meta % 1000];
-                        rgba = tMaterial.getRGBA();
-                        name = tMaterial.getLocalizedNameForItem(GT_LanguageManager.getTranslation("gt.blockores." + meta + ".name"));
-                    } else {
-                        name = GT_LanguageManager.getTranslation("bw.blockores.01." + (meta * -1) + ".name");
-                        final Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault((short) (meta * -1), null);
-                        rgba = werkstoff != null ? werkstoff.getRGBA() : new short[]{0,0,0,0}; 
-                    }
-                }
+
+                Materials tMaterial = Materials.getRealMaterial(meta);
+                rgba = tMaterial.getRGBA();
+                name = tMaterial.mLocalizedName;
             } else if (packet.ptype == 2) {
-                // Fluid
-                rgba = fluidColors.get((int) meta);
-                if (rgba == null) {
-                    DetravScannerMod.proxy.sendPlayerExeption( "Unknown fluid ID = " + meta + " Please add to FluidColors.java!");
-                    rgba = new short[]{0,0,0,0};
-                }
-                
-                name = Objects.firstNonNull(
-                    FluidRegistry.getFluid(meta).getLocalizedName(new FluidStack(FluidRegistry.getFluid(meta), 0)),
-                    StatCollector.translateToLocal("gui.detrav.scanner.unknown_fluid")
-                );
+//                // Fluid
+//                rgba = fluidColors.get((int) meta);
+//                if (rgba == null) {
+//                    DetravScannerMod.proxy.sendPlayerExeption( "Unknown fluid ID = " + meta + " Please add to FluidColors.java!");
+//                    rgba = new short[]{0,0,0,0};
+//                }
+//
+//                name = Objects.firstNonNull(
+//                    FluidRegistry.getFluid(meta).getLocalizedName(new FluidStack(FluidRegistry.getFluid(meta), 0)),
+//                    StatCollector.translateToLocal("gui.detrav.scanner.unknown_fluid")
+//                );
             } else if (packet.ptype == 3) {
                 // Pollution
                 name = StatCollector.translateToLocal("gui.detrav.scanner.pollution");
@@ -113,7 +106,7 @@ public class ProspectingPacket extends DetravPacket {
                 packet.map[i][j] = new HashMap<>();
                 for (int k = 0; k < kSize; k++) {
                     final byte y = aData.readByte();
-                    final short meta = aData.readShort();
+                    final String meta = aData.readUTF();
                     packet.map[i][j].put(y, meta);
                     if (packet.ptype != 2 || y == 1) addOre(packet, y, i, j, meta);
                     checkOut++;
@@ -153,7 +146,7 @@ public class ProspectingPacket extends DetravPacket {
                     tOut.writeByte(map[i][j].keySet().size());
                     for(byte key : map[i][j].keySet()) {
                         tOut.writeByte(key);
-                        tOut.writeShort(map[i][j].get(key));
+                        tOut.writeUTF(map[i][j].get(key));
                         checkOut++;
                     }
                 }
@@ -169,7 +162,7 @@ public class ProspectingPacket extends DetravPacket {
         DetravScannerMod.proxy.openProspectorGUI();
     }
 
-    public void addBlock(int x, int y, int z, short metaData) {
+    public void addBlock(int x, int y, int z, String metaData) {
         int aX = x - (chunkX-size)*16;
         int aZ = z - (chunkZ-size)*16;
         if(map[aX][aZ] == null) map[aX][aZ] = new HashMap<>();

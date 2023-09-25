@@ -41,7 +41,7 @@ public class DetravMapTexture extends AbstractTexture {
                 image.setRGB(i, j, backgroundColor);
                 if (packet.map[i][j] != null) {
                     if (packet.ptype == 0 || packet.ptype == 1) {
-                        for (short meta : packet.map[i][j].values()) {
+                        for (String meta : packet.map[i][j].values()) {
                             final String name = packet.metaMap.get(meta);
                             if (!selected.equals("All") && !selected.equals(name)) continue;
 
@@ -49,18 +49,18 @@ public class DetravMapTexture extends AbstractTexture {
                             break;
                         }
                     } else if (packet.ptype == 2) {
-                        final short fluidId = packet.map[i][j].get((byte) 1), fluidSize = packet.map[i][j].get((byte) 2);
-                        final String name = packet.metaMap.get(fluidId);
-                        
-                        // Variables used to locate within a chunk.
-                        final int k = (i % 16), l = (j % 16);
-                        
-                        if( ( (k + l * 16) * 3) < (fluidSize + 48) && (selected.equals("All") || selected.equals(name))) {
-                            image.setRGB(i, j, packet.ores.getOrDefault(name, Color.BLACK.getRGB()) | 0XFF000000);
-                        }
+//                        final short fluidId = packet.map[i][j].get((byte) 1), fluidSize = packet.map[i][j].get((byte) 2);
+//                        final String name = packet.metaMap.get(fluidId);
+//
+//                        // Variables used to locate within a chunk.
+//                        final int k = (i % 16), l = (j % 16);
+//
+//                        if( ( (k + l * 16) * 3) < (fluidSize + 48) && (selected.equals("All") || selected.equals(name))) {
+//                            image.setRGB(i, j, packet.ores.getOrDefault(name, Color.BLACK.getRGB()) | 0XFF000000);
+//                        }
                     }else if (packet.ptype == 3) {
-                        final short meta = packet.map[i][j].get((byte) 1);
-                        image.setRGB(i, j, ((meta & 0xFF) << 16) + ((meta & 0xFF) << 8) + ((meta & 0xFF)) | 0XFF000000);                        
+//                        final short meta = packet.map[i][j].get((byte) 1);
+//                        image.setRGB(i, j, ((meta & 0xFF) << 16) + ((meta & 0xFF) << 8) + ((meta & 0xFF)) | 0XFF000000);
                     }
                 }
                 // draw player pos
