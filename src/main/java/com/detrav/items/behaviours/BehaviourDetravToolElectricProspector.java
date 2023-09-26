@@ -104,8 +104,8 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                     }
                                     FluidStack fStack = GT_UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(c.xPosition * 16 + x, c.zPosition * 16 + z), -1);
                                     if (fStack.amount > 0) {
-//                                        packet.addBlock(c.xPosition * 16 + x, 1, c.zPosition * 16 + z, (short) fStack.getFluidID());
-//                                        packet.addBlock(c.xPosition * 16 + x, 2, c.zPosition * 16 + z, (short) fStack.amount);
+                                        packet.addBlock(c.xPosition * 16 + x, 1, c.zPosition * 16 + z, ""+fStack.getFluidID());
+                                        packet.addBlock(c.xPosition * 16 + x, 2, c.zPosition * 16 + z, ""+fStack.amount);
                                     }
                                     break;
                                 case 3:
@@ -115,7 +115,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                     if (polution > 0xFF)
                                         polution = 0xFF;
                                     polution = 0xFF - polution;
-                                    //packet.addBlock(c.xPosition * 16 + x, 1, c.zPosition * 16 + z, (short) polution);
+                                    packet.addBlock(c.xPosition * 16 + x, 1, c.zPosition * 16 + z, ""+ polution);
                                     break;
                             }
                             if (data > 1)

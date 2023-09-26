@@ -66,17 +66,17 @@ public class ProspectingPacket extends DetravPacket {
                 rgba = tMaterial.getRGBA();
                 name = tMaterial.mLocalizedName;
             } else if (packet.ptype == 2) {
-//                // Fluid
-//                rgba = fluidColors.get((int) meta);
-//                if (rgba == null) {
-//                    DetravScannerMod.proxy.sendPlayerExeption( "Unknown fluid ID = " + meta + " Please add to FluidColors.java!");
-//                    rgba = new short[]{0,0,0,0};
-//                }
-//
-//                name = Objects.firstNonNull(
-//                    FluidRegistry.getFluid(meta).getLocalizedName(new FluidStack(FluidRegistry.getFluid(meta), 0)),
-//                    StatCollector.translateToLocal("gui.detrav.scanner.unknown_fluid")
-//                );
+                // Fluid
+                rgba = fluidColors.get((int) Integer.parseInt(meta));
+                if (rgba == null) {
+                    DetravScannerMod.proxy.sendPlayerExeption( "Unknown fluid ID = " + meta + " Please add to FluidColors.java!");
+                    rgba = new short[]{0,0,0,0};
+                }
+
+                name = Objects.firstNonNull(
+                    FluidRegistry.getFluid(meta).getLocalizedName(new FluidStack(FluidRegistry.getFluid(meta), 0)),
+                    StatCollector.translateToLocal("gui.detrav.scanner.unknown_fluid")
+                );
             } else if (packet.ptype == 3) {
                 // Pollution
                 name = StatCollector.translateToLocal("gui.detrav.scanner.pollution");

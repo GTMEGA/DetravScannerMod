@@ -82,29 +82,29 @@ public class DetravScannerGUI extends GuiScreen {
         for(int i = aY ; i <aY + currentHeight ; i += 128) drawTexturedModalRect(aX+currentWidth+100,i,171,5,5,Math.min(128,aY+currentHeight-i)); //right
 
         if (map.packet.ptype == 2) {
-//            HashMap<Byte, Short>[][] fluidInfo = map.packet.map;
-//            int tX = x - aX;
-//            int tY = y - aY;
-//            if (tX >= 0 && tY >= 0 && tX < fluidInfo.length && tY < fluidInfo[0].length) {
-//                List<String> info = new ArrayList<>();
-//                if (fluidInfo[tX][tY] != null) {
-//                    short fluidId = fluidInfo[tX][tY].get((byte) 1);
-//                    short fluidAmount = fluidInfo[tX][tY].get((byte) 2);
-//                    if (fluidId != 0 && fluidAmount > 0) {
-//                        info.add(
-//                                StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_name")
-//                                        + map.packet.metaMap.get(fluidId));
-//                        info.add(
-//                                StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_amount")
-//                                        + GT_Utility.formatNumbers(fluidAmount) + " L");
-//                    }
-//                    else info.add(StatCollector.translateToLocal("gui.detrav.scanner.tooltip.no_fluid"));
-//                }
-//                else {
-//                    info.add(StatCollector.translateToLocal("gui.detrav.scanner.tooltip.no_fluid"));
-//                }
-//                func_146283_a(info, x, y);
-//            }
+            HashMap<Byte, String>[][] fluidInfo = map.packet.map;
+            int tX = x - aX;
+            int tY = y - aY;
+            if (tX >= 0 && tY >= 0 && tX < fluidInfo.length && tY < fluidInfo[0].length) {
+                List<String> info = new ArrayList<>();
+                if (fluidInfo[tX][tY] != null) {
+                    short fluidId = Short.parseShort(fluidInfo[tX][tY].get((byte) 1));
+                    short fluidAmount =  Short.parseShort(fluidInfo[tX][tY].get((byte) 2));
+                    if (fluidId != 0 && fluidAmount > 0) {
+                        info.add(
+                                StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_name")
+                                        + map.packet.metaMap.get(fluidId));
+                        info.add(
+                                StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_amount")
+                                        + GT_Utility.formatNumbers(fluidAmount) + " L");
+                    }
+                    else info.add(StatCollector.translateToLocal("gui.detrav.scanner.tooltip.no_fluid"));
+                }
+                else {
+                    info.add(StatCollector.translateToLocal("gui.detrav.scanner.tooltip.no_fluid"));
+                }
+                func_146283_a(info, x, y);
+            }
         }
     }
 
