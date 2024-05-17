@@ -1,7 +1,7 @@
 //file:noinspection DependencyNotationArgument
 repositories {
     maven {
-        name = "gtmega"
+        name = "mega"
         url = "https://mvn.falsepattern.com/gtmega_releases/"
     }
     maven {
@@ -13,30 +13,8 @@ repositories {
         }
     }
 
-    maven {
-        name = "Usrv" // YAMCore
-        url = "https://mvn.falsepattern.com/usrv/"
-    }
-
-    maven {
-        url "https://mvn.falsepattern.com/cursemaven/"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
-
     maven { // EnderIO & EnderCore
         name = 'tterrag Repo'
-        url = "https://maven.tterrag.com"
-    }
-
-
-    maven {
-        name = "chickenbones"
-        url = "https://nexus.covers1624.net/repository/maven-hosted/"
-        metadataSources {
-            mavenPom()
-            artifact()
-        }
+        url = "https://mvn.falsepattern.com/tterag/"
     }
 }
