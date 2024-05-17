@@ -13,8 +13,11 @@ def deobfCurse(curseDep) {
 }
 
 dependencies {
+    // ProjectRed Core 4.7.0pre12.95
+    api (deobfCurse("projectred-core-228702:2280728"))
+
     //compile("gtmega:gt5u-mc1.7.10:5.28.21-gtmega:dev")
-    implementation("gtmega:gt5u-mc1.7.10:5.32.0-mega:dev") {
+    implementation("gtmega:gt5u-mc1.7.10:5.37.0-mega:dev") {
         transitive = false
     }
 

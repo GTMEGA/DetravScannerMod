@@ -117,6 +117,11 @@ public class DetravToolElectricProspectorBase implements IToolStats {
     }
 
     @Override
+    public boolean isScrewdriver() {
+        return false;
+    }
+
+    @Override
     public boolean isWrench() {
         return false;
     }
