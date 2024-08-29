@@ -17,7 +17,7 @@ dependencies {
     api (deobfCurse("projectred-core-228702:2280728"))
 
     //compile("gtmega:gt5u-mc1.7.10:5.28.21-gtmega:dev")
-    implementation("gtmega:gt5u-mc1.7.10:5.37.0-mega:dev") {
+    implementation("gtmega:gt5u-mc1.7.10:5.40.0-a0004:dev") {
         transitive = false
     }
 
@@ -37,9 +37,10 @@ dependencies {
         transitive = false
     }
 
-    compileOnly("com.mod-buildcraft:buildcraft:7.1.23:dev") {
+    compileOnly("com.github.GTNewHorizons:BuildCraft:7.1.27:dev") {
         transitive = false
     }
+
     compileOnly("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev") {
         transitive = false
     }
