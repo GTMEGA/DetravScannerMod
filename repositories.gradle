@@ -1,7 +1,7 @@
 //file:noinspection DependencyNotationArgument
 repositories {
     maven {
-        name = "mega"
+        name = "gtmega"
         url = "https://mvn.falsepattern.com/gtmega_releases/"
     }
     maven {
@@ -12,9 +12,12 @@ repositories {
             artifact()
         }
     }
-
-    maven { // EnderIO & EnderCore
+    maven {
+        name = "overmind"
+        url = "https://gregtech.overminddl1.com"
+    }
+    maven {
         name = 'tterrag Repo'
-        url = "https://mvn.falsepattern.com/tterag/"
+        url = "https://maven.tterrag.com"
     }
 }
